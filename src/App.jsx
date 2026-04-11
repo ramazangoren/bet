@@ -43,9 +43,9 @@ const heroCards = [
 ];
 
 const heroGifs = [
-  { title: '1.000 TL YATIR - 250 TL AL!', accent: 'pink', image: gif1, href: 'https://www.betbalina134.com/tr/casino/slots' },
-  { title: '100 FREE SPIN AL!', accent: 'yellow', image: gif2, href: 'http://hadiwin.direct/#/?btag=2710669' },
-  { title: '100 FREE SPIN AL!', accent: 'violet', image: gif3, href: 'https://www.betbalina134.com/tr/casino/slots' },
+  { title: '1.000 TL YATIR - 250 TL AL!', accent: 'pink', image: gif1,  },
+  { title: '100 FREE SPIN AL!', accent: 'yellow', image: gif2,  },
+  { title: '100 FREE SPIN AL!', accent: 'violet', image: gif3, },
 ];
 
 const bonusItems = [
@@ -132,13 +132,13 @@ function PromoTile({ image, title, accent, href }) {
 
 // ─── GIF card (square, inside 3-col grid) ─────────────────────────────────
 
-function PromoGifCard({ image, title, accent, href }) {
+function PromoGifCard({ image, title, accent }) {
   const [hovered, setHovered] = useState(false);
   const accentHex = accent === 'yellow' ? '#f59e0b' : accent === 'pink' ? '#e8357a' : '#a855f7';
   const glow = accent === 'yellow' ? 'rgba(255,228,87,0.35)' : accent === 'pink' ? 'rgba(255,66,191,0.35)' : 'rgba(154,92,255,0.35)';
 
   return (
-    <Anchor href={href} target="_blank" rel="noopener noreferrer" underline="never" style={{ display: 'block' }}>
+    <Anchor target="_blank" rel="noopener noreferrer" underline="never" style={{ display: 'block' }}>
       {/* Outer wrapper keeps 1:1 ratio */}
       <Box
         onMouseEnter={() => setHovered(true)}
