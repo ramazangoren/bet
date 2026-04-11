@@ -3,20 +3,17 @@ import {
   MantineProvider,
   AppShell,
   Box,
-  Button,
   Container,
   Group,
   Image,
   Paper,
-  SimpleGrid,
   Stack,
   Text,
-  TextInput,
   Title,
   ThemeIcon,
-  Badge,
   AspectRatio,
   Anchor,
+  Flex,
 } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import {
@@ -25,55 +22,53 @@ import {
   IconGift,
   IconPhone,
   IconBriefcase,
-  IconExternalLink,
 } from '@tabler/icons-react';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 
+import betbalina from './assets/betbalina.jpeg';
+import hadiwin from './assets/hadiwin.jpeg';
 
 const SITE_URL = 'https://your-casino-site.com';
-const TELEGRAM_URL = 'https://t.me/your_channel';
+const TELEGRAM_URL = 'https://t.me/slotac';
 
 const heroCards = [
   {
-    title: '1.000 TL YATIR\n- 250 TL AL!',
+    title: '1.000 TL YATIR - 250 TL AL!',
     accent: 'pink',
-    tag: 'Popüler',
-    image: 'https://media.tenor.com/vFda0fRsGOQAAAAM/gullybet-bet-with-gullybet.gif',
-    href: `${SITE_URL}/bonus/1000tl`,
+    image: betbalina,
+    href: 'https://www.betbalina134.com/tr/casino/slots',
   },
   {
     title: '100 FREE SPIN AL!',
     accent: 'yellow',
-    tag: 'Yeni',
-    image: 'https://media.tenor.com/vFda0fRsGOQAAAAM/gullybet-bet-with-gullybet.gif',
-    href: `${SITE_URL}/bonus/freespin`,
+    image: hadiwin,
+    href: 'http://hadiwin.direct/#/?btag=2710669',
   },
   {
-    title: '100 FREE\nSPIN AL!',
+    title: '100 FREE SPIN AL!',
     accent: 'violet',
-    tag: 'VIP',
-    image: 'https://media.tenor.com/vFda0fRsGOQAAAAM/gullybet-bet-with-gullybet.gif',
-    href: `${SITE_URL}/bonus/vip`,
+    image: betbalina,
+    href: 'https://www.betbalina134.com/tr/casino/slots',
   },
 ];
 
 const bonusItems = [
   {
-    image: 'https://media.tenor.com/vFda0fRsGOQAAAAM/gullybet-bet-with-gullybet.gif',
+    image: hadiwin,
     text: '1.000 TL yatır canlı desteğe bağlan ve 250 TL al! Havale ile minimum 500 TL yatır',
-    badge: 'Yeni',
-    href: `${SITE_URL}/bonus/1000tl`,
+    badge: true,
+    href: 'http://hadiwin.direct/#/?btag=2710669',
   },
   {
-    image: 'https://media.tenor.com/vFda0fRsGOQAAAAM/gullybet-bet-with-gullybet.gif',
+    image: betbalina,
     text: 'MRBAHIS500FS KODU İLE CANLI DESTEĞE BAĞLANIP 100 FREE SPİN AL! MEGACÜZDAN İLE MİNİMUM 25 TL YATIR',
-    href: `${SITE_URL}/bonus/mrbahis500fs`,
+    href: 'https://www.betbalina134.com/tr/casino/slots',
   },
   {
-    image: 'https://media.tenor.com/vFda0fRsGOQAAAAM/gullybet-bet-with-gullybet.gif',
+    image: hadiwin,
     text: "SWEET BONANZA'DA 100 FREE SPİN HEMEN AL VE KAZANMAYA BAŞLA : TRBON100B ECOPAYZ İLE MİNİMUM 100 TL YATIR",
-    href: `${SITE_URL}/bonus/trbon100b`,
+    href: 'http://hadiwin.direct/#/?btag=2710669',
   },
   {
     image: null,
@@ -83,7 +78,7 @@ const bonusItems = [
   },
 ];
 
-// ─── Decorative background pieces ──────────────────────────────────────────
+// ─── Background decorations ────────────────────────────────────────────────
 
 function GlowOrb({ size, top, left, right, bottom, opacity = 0.35, blur = 14 }) {
   return (
@@ -100,113 +95,129 @@ function GlowOrb({ size, top, left, right, bottom, opacity = 0.35, blur = 14 }) 
 
 function DecorativeChip({ side = 'left', top = '78%', size = 220 }) {
   return (
-    <Box visibleFrom="md" style={{
-      position: 'absolute', [side]: '-110px', top,
-      width: size, height: size, borderRadius: '50%',
-      background: 'radial-gradient(circle at 35% 35%, rgba(255,225,186,0.95), rgba(177,91,255,0.95) 40%, rgba(80,20,120,1) 65%, rgba(30,6,48,1) 100%)',
-      boxShadow: '0 0 90px rgba(210, 90, 255, 0.35)', transform: 'rotate(-24deg)',
-      opacity: 0.78, pointerEvents: 'none',
-    }}>
+    <Box
+      visibleFrom="md"
+      style={{
+        position: 'absolute', [side]: '-110px', top,
+        width: size, height: size, borderRadius: '50%',
+        background: 'radial-gradient(circle at 35% 35%, rgba(255,225,186,0.95), rgba(177,91,255,0.95) 40%, rgba(80,20,120,1) 65%, rgba(30,6,48,1) 100%)',
+        boxShadow: '0 0 90px rgba(210,90,255,0.35)', transform: 'rotate(-24deg)',
+        opacity: 0.78, pointerEvents: 'none',
+      }}
+    >
       <Box style={{ position: 'absolute', inset: 22, borderRadius: '50%', border: '14px solid rgba(255,210,170,0.4)' }} />
     </Box>
   );
 }
 
-// ─── Promo tile — entire card is a link ────────────────────────────────────
+// ─── Promo tile ────────────────────────────────────────────────────────────
 
-function PromoTile({ image, title, accent, tag, href }) {
-  const glow = accent === 'yellow' ? 'rgba(255,228,87,0.30)' : accent === 'pink' ? 'rgba(255,66,191,0.30)' : 'rgba(154,92,255,0.30)';
-  const badgeColor = accent === 'yellow' ? 'yellow' : accent === 'pink' ? 'pink' : 'violet';
+function PromoTile({ image, title, accent, href }) {
+  const [hovered, setHovered] = useState(false);
+
   const accentHex = accent === 'yellow' ? '#f59e0b' : accent === 'pink' ? '#e8357a' : '#a855f7';
+  const glow = accent === 'yellow' ? 'rgba(255,228,87,0.20)' : accent === 'pink' ? 'rgba(255,66,191,0.20)' : 'rgba(154,92,255,0.20)';
 
   return (
-    <Anchor
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      underline="never"
-      style={{ display: 'block', borderRadius: 18, overflow: 'hidden' }}
-    >
+    <Anchor href={href} target="_blank" rel="noopener noreferrer" underline="never" style={{ display: 'block' }}>
       <Paper
-        radius={18}
+        radius={16}
         p={0}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
         style={{
-          background: '#050505',
-          border: `1px solid ${accentHex}33`,
-          position: 'relative',
           overflow: 'hidden',
-          boxShadow: `0 8px 28px ${glow}`,
-          transition: 'transform 0.18s ease, box-shadow 0.18s ease',
+          background: hovered ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.03)',
+          border: `1px solid ${hovered ? accentHex + '55' : accentHex + '28'}`,
+          boxShadow: hovered ? `0 10px 32px ${glow}` : `0 4px 16px ${glow}`,
           cursor: 'pointer',
-        }}
-        onMouseEnter={e => {
-          e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-          e.currentTarget.style.boxShadow = `0 16px 40px ${glow}`;
-        }}
-        onMouseLeave={e => {
-          e.currentTarget.style.transform = 'translateY(0) scale(1)';
-          e.currentTarget.style.boxShadow = `0 8px 28px ${glow}`;
+          transition: 'background 0.15s, border-color 0.15s, box-shadow 0.15s',
         }}
       >
-        <AspectRatio ratio={1}>
-          <Box style={{ position: 'relative', width: '100%', height: '100%' }}>
-            <Image src={image} alt={title} h="100%" fit="cover" style={{ opacity: 0.75 }} />
-            <Box style={{ position: 'absolute', inset: 0, background: 'linear-gradient(160deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.60) 100%)' }} />
-            <Box style={{ position: 'absolute', inset: 0, padding: '9px 9px 12px 11px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <Badge variant="light" color={badgeColor} radius="xl" size="sm"
-                style={{ alignSelf: 'flex-start', fontSize: 'clamp(8px, 2vw, 11px)' }}>
-                {tag}
-              </Badge>
-              <Text fw={900} fz={{ base: 12, sm: 15 }} lh={1.05} c="white"
-                style={{ letterSpacing: '-0.03em', textTransform: 'uppercase', whiteSpace: 'pre-line' }}>
-                {title}
-              </Text>
-            </Box>
-          </Box>
+        <AspectRatio ratio={16 / 3} style={{ width: '100%' }}>
+          <Image
+            src={image}
+            alt={title}
+            fit="cover"
+            style={{ opacity: hovered ? 1 : 0.88, transition: 'opacity 0.15s' }}
+          />
         </AspectRatio>
+
+        <Box p={{ base: 10, xs: 12, sm: 14, md: 18 }}>
+          <Flex gap="sm" justify="space-between" align="center" direction="row" wrap="nowrap">
+            <Text
+              fw={900}
+              fz={{ base: 11, xs: 12, sm: 14, md: 17 }}
+              lh={1.2}
+              c="white"
+              style={{
+                letterSpacing: '-0.03em',
+                textTransform: 'uppercase',
+                flex: 1,
+                minWidth: 0,
+                wordBreak: 'break-word',
+              }}
+            >
+              {title}
+            </Text>
+
+            <Box
+              style={{
+                flexShrink: 0,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                padding: '6px 10px',
+                borderRadius: 10,
+                background: `${accentHex}20`,
+                border: `1px solid ${accentHex}44`,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <Text fz={{ base: 10, sm: 12 }} fw={800} c={accentHex} style={{ textTransform: 'uppercase' }}>
+                GİRİŞ YAP
+              </Text>
+              <IconArrowUpRight size={12} color={accentHex} />
+            </Box>
+          </Flex>
+        </Box>
       </Paper>
     </Anchor>
   );
 }
 
-// ─── Action button (used inside BonusRow) ─────────────────────────────────
+// ─── Action button ─────────────────────────────────────────────────────────
 
-function ActionButton({ label, href }) {
+function ActionButton({ href }) {
   return (
-    <Anchor
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      underline="never"
-      style={{ flexShrink: 0 }}
-    >
+    <Anchor href={href} target="_blank" rel="noopener noreferrer" underline="never" style={{ flexShrink: 0 }}>
       <Box
         style={{
-          minWidth: 72,
-          width: 'clamp(72px, 20vw, 110px)',
-          height: 'clamp(58px, 16vw, 90px)',
+          minWidth: 58,
+          width: 'clamp(58px, 16vw, 96px)',
+          height: 'clamp(48px, 13vw, 74px)',
           background: 'linear-gradient(180deg, #f340a8 0%, #d93198 100%)',
-          borderRadius: 16,
-          boxShadow: '0 10px 26px rgba(255,73,184,0.28)',
+          borderRadius: 12,
+          boxShadow: '0 8px 22px rgba(255,73,184,0.28)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 5,
+          gap: 3,
           cursor: 'pointer',
           transition: 'opacity 0.15s, transform 0.15s',
         }}
-        onMouseEnter={e => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'scale(0.97)'; }}
-        onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1)'; }}
+        onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.88'; e.currentTarget.style.transform = 'scale(0.97)'; }}
+        onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1)'; }}
       >
-        <IconArrowUpRight size={24} color="white" strokeWidth={2.4} />
-        <Text c="white" fw={900} fz={11} lh={1}>{label}</Text>
+        <IconArrowUpRight size={18} color="white" strokeWidth={2.4} />
+        <Text c="white" fw={900} fz={{ base: 9, sm: 10 }} lh={1}>GİRİŞ YAP</Text>
       </Box>
     </Anchor>
   );
 }
 
-// ─── Bonus row — image AND button are both links ───────────────────────────
+// ─── Bonus row ─────────────────────────────────────────────────────────────
 
 function BonusRow({ image, text, badge, telegram, href }) {
   return (
@@ -221,8 +232,7 @@ function BonusRow({ image, text, badge, telegram, href }) {
       }}
     >
       <Group gap={0} align="stretch" wrap="nowrap">
-
-        {/* Left: clickable image / telegram icon */}
+        {/* Thumbnail */}
         <Anchor
           href={href}
           target="_blank"
@@ -234,44 +244,59 @@ function BonusRow({ image, text, badge, telegram, href }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 10,
+            padding: 8,
             flexShrink: 0,
-            width: 'clamp(80px, 22vw, 116px)',
+            width: 'clamp(64px, 18vw, 106px)',
             transition: 'opacity 0.15s',
           }}
-          onMouseEnter={e => e.currentTarget.style.opacity = '0.75'}
-          onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+          onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.75')}
+          onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
         >
           {badge && (
             <>
-              <Box style={{ position: 'absolute', top: 0, left: 0, width: 0, height: 0, borderTop: '34px solid #ff9d17', borderRight: '34px solid transparent', zIndex: 2 }} />
-              <ThemeIcon variant="transparent" color="dark" size={15} style={{ position: 'absolute', top: 5, left: 4, zIndex: 3 }}>
-                <IconBriefcase size={15} stroke={2.3} />
+              <Box style={{ position: 'absolute', top: 0, left: 0, width: 0, height: 0, borderTop: '28px solid #ff9d17', borderRight: '28px solid transparent', zIndex: 2 }} />
+              <ThemeIcon variant="transparent" color="dark" size={12} style={{ position: 'absolute', top: 3, left: 3, zIndex: 3 }}>
+                <IconBriefcase size={12} stroke={2.3} />
               </ThemeIcon>
             </>
           )}
-
           {telegram ? (
-            <ThemeIcon size={56} radius={56} color="blue" variant="filled">
-              <IconBrandTelegram size={30} />
+            <ThemeIcon size={44} radius={44} color="blue" variant="filled">
+              <IconBrandTelegram size={24} />
             </ThemeIcon>
           ) : (
-            <AspectRatio ratio={1} style={{ width: '100%', maxWidth: 76 }}>
+            <AspectRatio ratio={1} style={{ width: '100%', maxWidth: 68 }}>
               <Image src={image} alt="bonus" radius={8} />
             </AspectRatio>
           )}
         </Anchor>
 
-        {/* Right: text + CTA button */}
-        <Group justify="space-between" align="center" wrap="nowrap"
-          style={{ flex: 1, padding: '12px 10px', minWidth: 0 }} gap="xs">
-          <Text fw={800} fz={{ base: 11, xs: 13, sm: 16, md: 18 }} lh={1.15} c="white"
-            style={{ letterSpacing: '-0.02em', textTransform: 'uppercase', wordBreak: 'break-word', flex: 1, minWidth: 0 }}>
+        {/* Text + CTA */}
+        <Group
+          justify="space-between"
+          align="center"
+          wrap="nowrap"
+          style={{ flex: 1, padding: '10px 8px', minWidth: 0 }}
+          gap={8}
+        >
+          <Text
+            fw={800}
+            fz={{ base: 10, xs: 11, sm: 13, md: 15 }}
+            lh={1.25}
+            c="white"
+            style={{
+              letterSpacing: '-0.02em',
+              textTransform: 'uppercase',
+              wordBreak: 'break-word',
+              flex: 1,
+              minWidth: 0,
+              paddingRight: 4,
+            }}
+          >
             {text}
           </Text>
-          <ActionButton label="GİRİŞ YAP" href={href} />
+          <ActionButton href={href} />
         </Group>
-
       </Group>
     </Paper>
   );
@@ -284,25 +309,50 @@ function SignupCard() {
   const [focused, setFocused] = useState(false);
 
   return (
-    <Paper radius={24} p={{ base: 'md', sm: 'xl' }} style={{
-      position: 'relative', overflow: 'visible',
-      background: 'linear-gradient(180deg, rgba(31,16,49,0.98) 0%, rgba(22,11,35,0.98) 100%)',
-      border: '1px solid rgba(255,255,255,0.05)',
-      boxShadow: '0 18px 40px rgba(20,4,36,0.3)',
-    }}>
-      <Box style={{ position: 'absolute', left: '50%', top: -38, transform: 'translateX(-50%) rotate(-10deg)', zIndex: 4 }}>
-        <ThemeIcon size={76} radius={76} color="orange" variant="gradient" gradient={{ from: 'yellow', to: 'orange' }}
-          style={{ boxShadow: '0 14px 28px rgba(255,166,0,0.3)' }}>
-          <IconGift size={40} />
+    <Paper
+      radius={24}
+      p={{ base: 'md', sm: 'xl' }}
+      style={{
+        position: 'relative',
+        overflow: 'visible',
+        background: 'linear-gradient(180deg, rgba(31,16,49,0.98) 0%, rgba(22,11,35,0.98) 100%)',
+        border: '1px solid rgba(255,255,255,0.05)',
+        boxShadow: '0 18px 40px rgba(20,4,36,0.3)',
+      }}
+    >
+      <Box style={{ position: 'absolute', left: '50%', top: -32, transform: 'translateX(-50%) rotate(-10deg)', zIndex: 4 }}>
+        <ThemeIcon
+          size={64}
+          radius={64}
+          color="orange"
+          variant="gradient"
+          gradient={{ from: 'yellow', to: 'orange' }}
+          style={{ boxShadow: '0 14px 28px rgba(255,166,0,0.3)' }}
+        >
+          <IconGift size={32} />
         </ThemeIcon>
       </Box>
 
-      <Stack gap={16} mt={34}>
+      <Stack gap={14} mt={30}>
         <Stack gap={6} align="center">
-          <Text ta="center" fw={900} fz={{ base: 15, xs: 17, sm: 26, md: 30 }} lh={1.05} c="white" style={{ letterSpacing: '-0.04em' }}>
+          <Text
+            ta="center"
+            fw={900}
+            fz={{ base: 14, xs: 16, sm: 22, md: 26 }}
+            lh={1.1}
+            c="white"
+            style={{ letterSpacing: '-0.04em' }}
+          >
             <Text span c="orange.4" inherit>Sadece</Text>{' '}size özel en iyi bonusları ilk gören siz olmak ister misiniz?
           </Text>
-          <Text ta="center" fw={800} fz={{ base: 13, xs: 15, sm: 20, md: 22 }} lh={1.1} c="white" style={{ letterSpacing: '-0.03em' }}>
+          <Text
+            ta="center"
+            fw={800}
+            fz={{ base: 12, xs: 14, sm: 17, md: 20 }}
+            lh={1.15}
+            c="white"
+            style={{ letterSpacing: '-0.03em' }}
+          >
             <Text span c="orange.4" inherit>Telefon</Text>{' '}numaranızı girin ve bonusuzu şimdi etkinleştirin!
           </Text>
         </Stack>
@@ -314,19 +364,25 @@ function SignupCard() {
             </Box>
             <input
               value={phone}
-              onChange={e => setPhone(e.target.value)}
+              onChange={(e) => setPhone(e.target.value)}
               placeholder="Cep telefonu numaranız"
               type="tel"
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
               style={{
-                width: '100%', height: 52, boxSizing: 'border-box',
+                width: '100%',
+                height: 50,
+                boxSizing: 'border-box',
                 background: 'rgba(255,255,255,0.96)',
                 border: `1.5px solid ${focused ? '#e8357a88' : 'transparent'}`,
-                borderRadius: 14, color: '#1a0030',
-                fontSize: 14, fontWeight: 700,
-                paddingLeft: 44, paddingRight: 16,
-                outline: 'none', fontFamily: 'inherit',
+                borderRadius: 14,
+                color: '#1a0030',
+                fontSize: 14,
+                fontWeight: 700,
+                paddingLeft: 44,
+                paddingRight: 16,
+                outline: 'none',
+                fontFamily: 'inherit',
                 transition: 'border-color 0.15s',
               }}
             />
@@ -335,18 +391,25 @@ function SignupCard() {
           <Anchor href={`${SITE_URL}/register`} target="_blank" rel="noopener noreferrer" underline="never">
             <Box
               style={{
-                width: '100%', height: 52,
+                width: '100%',
+                height: 50,
                 background: 'linear-gradient(180deg, #f340a8 0%, #d93198 100%)',
-                borderRadius: 14, color: 'white',
-                fontSize: 15, fontWeight: 900,
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                borderRadius: 14,
+                color: 'white',
+                fontSize: 15,
+                fontWeight: 900,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
                 boxShadow: '0 10px 28px rgba(255,73,184,0.30)',
-                cursor: 'pointer', transition: 'opacity 0.15s',
+                cursor: 'pointer',
+                transition: 'opacity 0.15s',
               }}
-              onMouseEnter={e => e.currentTarget.style.opacity = '0.88'}
-              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.88')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
             >
-              Cep telefonu numaranız <IconArrowUpRight size={18} />
+              Bonusu Etkinleştir <IconArrowUpRight size={18} />
             </Box>
           </Anchor>
         </Stack>
@@ -359,33 +422,50 @@ function SignupCard() {
 
 function FooterTelegram() {
   return (
-    <Paper radius={0} px={{ base: 14, sm: 20 }} py={{ base: 13, sm: 18 }} style={{
-      background: 'rgba(14,6,24,0.98)',
-      borderTop: '1px solid rgba(255,255,255,0.05)',
-      position: 'sticky', bottom: 0, zIndex: 20,
-    }}>
+    <Paper
+      radius={0}
+      px={{ base: 12, sm: 20 }}
+      py={{ base: 11, sm: 16 }}
+      style={{
+        background: 'rgba(14,6,24,0.98)',
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+        position: 'sticky',
+        bottom: 0,
+        zIndex: 20,
+      }}
+    >
       <Container size="lg" px={0}>
         <Group justify="space-between" align="center" wrap="nowrap" gap="sm">
-          <Text fw={900} fz={{ base: 15, xs: 17, sm: 21 }} c="white" lh={1.15}
-            style={{ letterSpacing: '-0.04em', textTransform: 'uppercase', flex: 1 }}>
-            ⚡ Telegram ⚡<br />Hediyeler İçin Bana Katıl ⚡
+          <Text
+            fw={900}
+            fz={{ base: 12, xs: 14, sm: 18 }}
+            c="white"
+            lh={1.2}
+            style={{ letterSpacing: '-0.04em', textTransform: 'uppercase', flex: 1 }}
+          >
+            ⚡ Telegram ⚡<br />
+            Hediyeler İçin Bana Katıl ⚡
           </Text>
-
           <Anchor href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" underline="never" style={{ flexShrink: 0 }}>
             <Box
               style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                width: 'clamp(56px, 16vw, 130px)', height: 'clamp(46px, 12vw, 64px)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                width: 'clamp(44px, 13vw, 116px)',
+                height: 'clamp(40px, 11vw, 56px)',
                 background: 'linear-gradient(135deg, #2fb5ff 0%, #0e87d0 100%)',
-                borderRadius: 14, cursor: 'pointer',
+                borderRadius: 12,
+                cursor: 'pointer',
                 boxShadow: '0 6px 20px rgba(14,135,208,0.32)',
                 transition: 'opacity 0.15s',
               }}
-              onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
             >
-              <IconBrandTelegram size={26} color="white" />
-              <Text fw={800} fz={14} c="white" visibleFrom="xs">Katıl</Text>
+              <IconBrandTelegram size={22} color="white" />
+              <Text fw={800} fz={13} c="white" visibleFrom="xs">Katıl</Text>
             </Box>
           </Anchor>
         </Group>
@@ -398,72 +478,125 @@ function FooterTelegram() {
 
 export default function App() {
   return (
-    <MantineProvider defaultColorScheme="dark" theme={{
-      primaryColor: 'pink', defaultRadius: 'md',
-      fontFamily: 'Inter, ui-sans-serif, system-ui, -apple-system, sans-serif',
-    }}>
+    <MantineProvider
+      defaultColorScheme="dark"
+      theme={{
+        primaryColor: 'pink',
+        defaultRadius: 'md',
+        fontFamily: 'Inter, ui-sans-serif, system-ui, -apple-system, sans-serif',
+        breakpoints: {
+          xs: '30em',   // 480px
+          sm: '48em',   // 768px
+          md: '64em',   // 1024px
+          lg: '74em',
+          xl: '90em',
+        },
+      }}
+    >
       <Notifications />
       <AppShell padding={0}>
         <AppShell.Main>
-          <Box style={{
-            minHeight: '100vh', position: 'relative', overflow: 'hidden',
-            background: 'radial-gradient(circle at 50% 18%, rgba(146,61,255,0.22), transparent 22%), linear-gradient(180deg, #07010d 0%, #170320 22%, #391053 58%, #682078 82%, #1a0c2d 100%)',
-          }}>
-            <GlowOrb size={120} top={120} left={10} opacity={0.28} />
-            <GlowOrb size={100} top={340} left={30} opacity={0.22} />
-            <GlowOrb size={110} top={200} right={20} opacity={0.20} />
-            <GlowOrb size={120} bottom={220} right={10} opacity={0.28} />
-            <GlowOrb size={100} bottom={80} left={10} opacity={0.18} />
+          <Box
+            style={{
+              minHeight: '100vh',
+              position: 'relative',
+              overflow: 'hidden',
+              background:
+                'radial-gradient(circle at 50% 18%, rgba(146,61,255,0.22), transparent 22%), linear-gradient(180deg, #07010d 0%, #170320 22%, #391053 58%, #682078 82%, #1a0c2d 100%)',
+            }}
+          >
+            {/* Glows hidden on smallest screens for perf */}
+            <Box visibleFrom="xs">
+              <GlowOrb size={100} top={100} left={10} opacity={0.28} />
+              <GlowOrb size={90} top={320} left={20} opacity={0.22} />
+              <GlowOrb size={100} top={180} right={20} opacity={0.20} />
+              <GlowOrb size={110} bottom={200} right={10} opacity={0.28} />
+              <GlowOrb size={90} bottom={70} left={10} opacity={0.18} />
+            </Box>
+
             <DecorativeChip side="left" top="72%" size={210} />
             <DecorativeChip side="right" top="38%" size={210} />
             <DecorativeChip side="right" top="88%" size={200} />
 
-            <Container size="sm" py={{ base: 20, sm: 36, md: 56 }} px={{ base: 12, sm: 20 }}
-              style={{ position: 'relative', zIndex: 2 }}>
-              <Stack gap={{ base: 18, sm: 24 }}>
+            <Container
+              size="sm"
+              py={{ base: 14, sm: 30, md: 52 }}
+              px={{ base: 8, xs: 12, sm: 18, md: 24 }}
+              style={{ position: 'relative', zIndex: 2 }}
+            >
+              <Stack gap={{ base: 12, sm: 18, md: 26 }}>
 
                 {/* Header */}
-                <Stack gap={8} align="center" pt={{ base: 12, sm: 8 }}>
+                <Stack gap={8} align="center" pt={{ base: 10, sm: 8 }}>
                   <Anchor href={SITE_URL} target="_blank" rel="noopener noreferrer" underline="never">
-                    <Image src="https://placehold.co/180x60/000000/ffffff?text=ASGARD"
-                      alt="Asgard" w={{ base: 80, sm: 110 }} fit="contain" style={{ cursor: 'pointer' }} />
+                    <Image
+                      src="https://placehold.co/180x60/000000/ffffff?text=ASGARD"
+                      alt="Asgard"
+                      w={{ base: 68, xs: 80, sm: 100, md: 120 }}
+                      fit="contain"
+                      style={{ cursor: 'pointer' }}
+                    />
                   </Anchor>
 
-                  <Title order={1} ta="center" fz={{ base: 28, xs: 36, sm: 48, md: 56 }}
-                    lh={0.98} c="white" style={{ letterSpacing: '-0.06em', textTransform: 'uppercase' }}>
+                  <Title
+                    order={1}
+                    ta="center"
+                    fz={{ base: 24, xs: 32, sm: 44, md: 54 }}
+                    lh={0.98}
+                    c="white"
+                    style={{ letterSpacing: '-0.06em', textTransform: 'uppercase' }}
+                  >
                     Slot Oyunları<br />Asgard
                   </Title>
 
-                  <Text ta="center" c="white" fw={800} fz={{ base: 14, xs: 16, sm: 20 }}
-                    style={{ textTransform: 'uppercase', letterSpacing: '-0.03em' }}>
+                  <Text
+                    ta="center"
+                    c="white"
+                    fw={800}
+                    fz={{ base: 12, xs: 14, sm: 18 }}
+                    style={{ textTransform: 'uppercase', letterSpacing: '-0.03em' }}
+                  >
                     Kayıt ol bonusları kap
                   </Text>
 
                   <Anchor href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" underline="never">
-                    <ThemeIcon size={52} radius={16} variant="light" color="violet"
-                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.09)', marginTop: 6, cursor: 'pointer', transition: 'opacity 0.15s' }}
-                      onMouseEnter={e => e.currentTarget.style.opacity = '0.7'}
-                      onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-                      <IconBrandTelegram size={24} />
+                    <ThemeIcon
+                      size={46}
+                      radius={14}
+                      variant="light"
+                      color="violet"
+                      style={{
+                        background: 'rgba(255,255,255,0.06)',
+                        border: '1px solid rgba(255,255,255,0.09)',
+                        marginTop: 4,
+                        cursor: 'pointer',
+                        transition: 'opacity 0.15s',
+                      }}
+                    >
+                      <IconBrandTelegram size={22} />
                     </ThemeIcon>
                   </Anchor>
                 </Stack>
 
-                {/* Promo cards — each card is a link */}
-                <Paper radius={22} p={{ base: 10, sm: 16 }} style={{
-                  background: 'rgba(35,6,54,0.82)',
-                  border: '1px solid rgba(255,255,255,0.03)',
-                  boxShadow: '0 20px 50px rgba(10,0,20,0.36)',
-                }}>
-                  <SimpleGrid cols={3} spacing={{ base: 8, sm: 12 }}>
+                {/* Hero promo cards */}
+                <Paper
+                  radius={20}
+                  p={{ base: 8, xs: 10, sm: 14 }}
+                  style={{
+                    background: 'rgba(35,6,54,0.82)',
+                    border: '1px solid rgba(255,255,255,0.03)',
+                    boxShadow: '0 20px 50px rgba(10,0,20,0.36)',
+                  }}
+                >
+                  <Stack gap={{ base: 6, sm: 10 }}>
                     {heroCards.map((card) => (
                       <PromoTile key={card.title} {...card} />
                     ))}
-                  </SimpleGrid>
+                  </Stack>
                 </Paper>
 
                 {/* Bonus rows */}
-                <Stack gap={{ base: 10, sm: 14 }}>
+                <Stack gap={{ base: 8, sm: 12 }}>
                   {bonusItems.map((item, index) => (
                     <BonusRow key={index} {...item} />
                   ))}
